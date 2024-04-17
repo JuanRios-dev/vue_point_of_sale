@@ -1,13 +1,16 @@
 <script>
 export default {
     props: {
-        color: {
+        style: {
             type: String,
         },
         title: {
             type: String,
         },
         icon: {
+            type: String,
+        },
+        url: {
             type: String,
         }
     },
@@ -23,7 +26,7 @@ export default {
 </script>
 
 <template>
-    <button type="button" :class="[color, 'btn', 'btn-sm']">
+    <a :href="url" :class="[style, 'btn']">
         <i :class="[icon]"></i> {{ title }}
-    </button>
+    </a>
 </template>

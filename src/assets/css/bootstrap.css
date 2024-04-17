@@ -1,18 +1,5 @@
 @charset "UTF-8";
-/*
-Template Name: Xeria - Responsive Bootstrap 4 Admin Dashboard
-Author: CoderThemes
-Version: 1.0.0
-Website: https://coderthemes.com/
-Contact: support@coderthemes.com
-File: Custom Bootstrap Css File
-*/
-/*!
- * Bootstrap v4.3.1 (https://getbootstrap.com/)
- * Copyright 2011-2019 The Bootstrap Authors
- * Copyright 2011-2019 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- */
+
 :root {
   --blue: #5089de;
   --indigo: #4a3ac7;
@@ -34,7 +21,7 @@ File: Custom Bootstrap Css File
   --warning: #f8cc6b;
   --danger: #f0643b;
   --light: #f1f5f7;
-  --dark: #414d5f;
+  --dark: #192537;
   --pink: #e36498;
   --purple: #675db7;
   --breakpoint-xs: 0;
@@ -1345,7 +1332,7 @@ pre {
 .table {
   width: 100%;
   margin-bottom: 1.5rem;
-  color: #6c757d; }
+  color: #484747;}
   .table th,
   .table td {
     padding: 0.85rem;
@@ -1353,13 +1340,18 @@ pre {
     border-top: 1px solid #dee2e6; }
   .table thead th {
     vertical-align: bottom;
-    border-bottom: 2px solid #dee2e6; }
+    border-bottom: 1px solid #dee2e6; }
   .table tbody + tbody {
-    border-top: 2px solid #dee2e6; }
+    border-top: 1px solid #dee2e6;}
+
+    .table-sm {
+      font-size: 0.7rem;
+    }
 
 .table-sm th,
 .table-sm td {
-  padding: 0.5rem; }
+  padding: 0.2rem;
+}
 
 .table-bordered {
   border: 1px solid #dee2e6; }
@@ -1380,8 +1372,8 @@ pre {
   background-color: #f1f5f7; }
 
 .table-hover tbody tr:hover {
-  color: #6c757d;
-  background-color: #f1f5f7; }
+
+  background-color: #ccc; }
 
 .table-primary,
 .table-primary > th,
@@ -1566,7 +1558,7 @@ pre {
 
 .table .thead-dark th {
   color: #ffffff;
-  background-color: #323a46;
+  background-color: var(--dark);
   border-color: #424c5c; }
 
 .table .thead-light th {

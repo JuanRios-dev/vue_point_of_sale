@@ -6,6 +6,11 @@ const emit = defineEmits(['menuToggled']);
 const isNotifyOpen = ref([])
 const toggleNotify = (index) => {
     isNotifyOpen.value[index] = !isNotifyOpen.value[index];
+    for (let i = 0; i < isNotifyOpen.value.length; i++) {
+        if (i !== index) {
+            isNotifyOpen.value[i] = false;
+        }
+    }
 }
 
 const isMenuOpen = ref(false)
@@ -24,7 +29,7 @@ const toggleMenu = () => {
     <!-- Topbar Start -->
     <div class="navbar-custom">
         <div class="container-fluid">
-            <ul class="list-unstyled topnav-menu float-right mb-0">
+            <ul class="list-unstyled topnav-menu mb-0">
 
                 <li class="dropdown notification-list">
                     <!-- Mobile menu toggle-->
@@ -38,37 +43,67 @@ const toggleMenu = () => {
                     <!-- End mobile menu toggle-->
                 </li>
 
-                <li class="d-none d-sm-block">
-                    <form class="app-search">
-                        <div class="app-search-box">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search...">
-                                <div class="input-group-append">
-                                    <button class="btn" type="submit">
-                                        <i class="fe-search"></i>
-                                    </button>
-                                </div>
-                            </div>
+                <li class="dropdown notification-list" :class="{ show: isNotifyOpen[1] }">
+                    <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect" data-toggle="dropdown" href="#"
+                        role="button" @click.prevent="toggleNotify(1)">
+                        <img src="../../assets/images/users/user-1.jpg" alt="user-image" class="rounded-circle">
+                        <span class="pro-user-name ml-1">
+                            Marcia J. <i class="mdi mdi-chevron-down"></i>
+                        </span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right profile-dropdown" :class="{ show: isNotifyOpen[1] }">
+                        <!-- item-->
+                        <div class="dropdown-item noti-title">
+                            <h5 class="m-0">
+                                Welcome !
+                            </h5>
                         </div>
-                    </form>
+
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item notify-item">
+                            <i class="fe-user"></i>
+                            <span>My Account</span>
+                        </a>
+
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item notify-item">
+                            <i class="fe-settings"></i>
+                            <span>Settings</span>
+                        </a>
+
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item notify-item">
+                            <i class="fe-lock"></i>
+                            <span>Lock Screen</span>
+                        </a>
+
+                        <div class="dropdown-divider"></div>
+
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item notify-item">
+                            <i class="fe-log-out"></i>
+                            <span>Logout</span>
+                        </a>
+
+                    </div>
                 </li>
 
                 <li class="dropdown notification-list" :class="{ show: isNotifyOpen[0] }">
-                    <a class="nav-link dropdown-toggle  waves-effect" data-toggle="dropdown" href="#" role="button"
+                    <a class="nav-link waves-effect" data-toggle="dropdown" href="#" role="button"
                         @click.prevent="toggleNotify(0)">
                         <i class="fe-bell noti-icon"></i>
-                        <span class="badge badge-danger rounded-circle noti-icon-badge">5</span>
+                        <span class="badge rounded-circle noti-icon-badge">5</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-lg" :class="{ show: isNotifyOpen[0] }">
 
                         <!-- item-->
                         <div class="dropdown-item noti-title">
-                            <h5 class="m-0">
-                                <span class="float-right">
-                                    <a href="" class="text-muted">
-                                        <small>Clear All</small>
-                                    </a>
-                                </span>Notification
+                            <h5 class="m-0 d-flex align-items-center justify-content-between">
+                                Notification
+                                <a href="" class="text-muted">
+                                    <small>Clear All</small>
+                                </a>
+
                             </h5>
                         </div>
 
@@ -145,51 +180,6 @@ const toggleMenu = () => {
                             class="dropdown-item text-center text-primary notify-item notify-all">
                             View all
                             <i class="fi-arrow-right"></i>
-                        </a>
-
-                    </div>
-                </li>
-
-                <li class="dropdown notification-list" :class="{ show: isNotifyOpen[1] }">
-                    <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect" data-toggle="dropdown" href="#" role="button"
-                        @click.prevent="toggleNotify(1)">
-                        <img src="../../assets/images/users/user-1.jpg" alt="user-image" class="rounded-circle">
-                        <span class="pro-user-name ml-1">
-                            Marcia J. <i class="mdi mdi-chevron-down"></i>
-                        </span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right profile-dropdown" :class="{ show: isNotifyOpen[1] }">
-                        <!-- item-->
-                        <div class="dropdown-item noti-title">
-                            <h5 class="m-0">
-                                Welcome !
-                            </h5>
-                        </div>
-
-                        <!-- item-->
-                        <a href="javascript:void(0);" class="dropdown-item notify-item">
-                            <i class="fe-user"></i>
-                            <span>My Account</span>
-                        </a>
-
-                        <!-- item-->
-                        <a href="javascript:void(0);" class="dropdown-item notify-item">
-                            <i class="fe-settings"></i>
-                            <span>Settings</span>
-                        </a>
-
-                        <!-- item-->
-                        <a href="javascript:void(0);" class="dropdown-item notify-item">
-                            <i class="fe-lock"></i>
-                            <span>Lock Screen</span>
-                        </a>
-
-                        <div class="dropdown-divider"></div>
-
-                        <!-- item-->
-                        <a href="javascript:void(0);" class="dropdown-item notify-item">
-                            <i class="fe-log-out"></i>
-                            <span>Logout</span>
                         </a>
 
                     </div>

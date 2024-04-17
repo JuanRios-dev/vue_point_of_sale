@@ -1,8 +1,15 @@
 <script>
-import Button from './Button.vue'
 export default {
-    components: {
-        Button
+    props: {
+        btnColor: {
+            type: String,
+        },
+        btnTitle: {
+            type: String,
+        },
+        btnIcon: {
+            type: String,
+        }
     },
     data() {
         return {
@@ -20,7 +27,22 @@ export default {
         <div class="col-12">
 
             <div class="d-flex justify-content-between align-items-center mb-2">
-                <Button :color="'btn-primary'" :title="'Add cliente'" :icon="'mdi mdi-plus-circle'"></Button>
+                <div class="">
+                    <slot name="btn"></slot>
+                </div>
+
+                <form class="app-search">
+                    <div class="app-search-box">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search...">
+                            <div class="input-group-append">
+                                <button class="btn btn-dark" type="submit">
+                                    <i class="fe-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
 
             <div class="table-responsive">
