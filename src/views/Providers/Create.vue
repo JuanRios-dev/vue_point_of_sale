@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, defineEmits } from 'vue'
-import CustomerForm from '@/components/forms/CustomerForm.vue'
+import ProviderForm from '@/components/forms/ProviderForm.vue'
 import { sendRequest } from '@/requestHandler';
 import Modal from '@/components/Modal.vue'
 import Button from '@/components/Button.vue'
@@ -11,14 +11,14 @@ const emit = defineEmits(['created']);
 
 /* REGISTRO DE CLIENTE */
 
-const DataCreate = ref<tables.Customer>({ tipo_documento: 'CC' });
+const DataCreate = ref<tables.Provider>({ tipo_documento: 'CC', responsable_iva: 1, company_id: 1 });
 const createErrors = ref([])
 const createData = async () => {
-    const { status, error, errors } = await sendRequest('POST', '/customers', DataCreate.value);
+    const { status, error, errors } = await sendRequest('POST', '/providers', DataCreate.value);
 
     if (status === 201) {
         closeModal('modalCreate');
-        tables.clearFormData(DataCreate.value, { tipo_documento: 'CC' });
+        tables.clearFormData(DataCreate.value, { tipo_documento: 'CC', responsable_iva: 1  });
 
         createErrors.value = [];
 
@@ -31,9 +31,9 @@ const createData = async () => {
 </script>
 
 <template>
-    <Modal :modalId="'modalCreate'" :title="'Formulario de Clientes'">
+    <Modal :modalId="'modalCreate'" :title="'Formulario de Proveedores'">
         <template v-slot:body>
-            <CustomerForm :formData="DataCreate" :infoErrors="createErrors"></CustomerForm>
+            <ProviderForm :formData="DataCreate" :infoErrors="createErrors"></ProviderForm>
         </template>
         <template v-slot:footer>
             <Button :style="'btn-primary mr-1'" :title="'Guardar'" :icon="'fa fa-edit'" @click="createData()"></Button>

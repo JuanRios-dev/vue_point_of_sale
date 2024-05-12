@@ -16,7 +16,7 @@ export interface NavItem {
 export const navItems: NavItem[] = [
   {
     title: "Vender",
-    link: "#",
+    link: "/sales/create",
     icon: "mdi mdi-sale",
   },
   {
@@ -28,10 +28,9 @@ export const navItems: NavItem[] = [
     title: "POS",
     icon: "fas fa-cash-register",
     items: [
-      { label: "Cajas", link: "#" },
-      { label: "Notas Credito", link: "" },
-      { label: "Notas Debito", link: "" },
-      { label: "Devoluciones", link: "" },
+      { label: "Cajas", link: "/cashes" },
+      { label: "Notas Credito - Proxim...", link: "#" },
+      { label: "Notas Debito - Proxim...", link: "#" },
     ],
   },
   {
@@ -39,7 +38,7 @@ export const navItems: NavItem[] = [
     icon: "fa fa-users",
     items: [
       { label: "Clientes", link: "/customers" },
-      { label: "Proveedores", link: "#" },
+      { label: "Proveedores", link: "/providers" },
     ],
   },
   {
@@ -48,17 +47,17 @@ export const navItems: NavItem[] = [
     items: [
       {
         label: "Bodegas",
-        link: "#",
+        link: "/wineries",
         subitems: [
           {
             label: "Traslados",
-            link: "#",
+            link: "/transfers",
           },
         ],
       },
-      { label: "Productos", link: "" },
-      { label: "Movimientos", link: "" },
-      { label: "Compras", link: "" },
+      { label: "Productos", link: "/items" },
+      { label: "Movimientos", link: "/movements" },
+      { label: "Factura Proveedor", link: "/provider-invoices" },
     ],
   },
   {

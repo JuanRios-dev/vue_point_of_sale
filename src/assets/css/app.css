@@ -702,7 +702,7 @@ Responsive Menu
 }
 
 .page-title-box .page-title {
-  font-size: 1.25rem;
+  font-size: 1.4rem;
   margin: 0;
   line-height: 75px;
   color: #323a46;
@@ -3813,15 +3813,6 @@ div.dt-button-info h2 {
   padding: 10px 20px;
 }
 
-.authentication-bg.enlarged {
-  min-height: 100px;
-}
-
-body.authentication-bg {
-  background-size: cover;
-  background-position: center;
-}
-
 .auth-title {
   background-color: #f7fafb;
   border-top: 1px solid #ecf2f4;
@@ -3831,10 +3822,6 @@ body.authentication-bg {
   text-transform: uppercase;
   font-weight: bold;
   text-align: center;
-}
-
-body.authentication-bg-pattern {
-  background-image: url("../images/bg-pattern.png");
 }
 
 .logout-icon {

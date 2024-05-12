@@ -6,48 +6,48 @@ import StartPage from '@/components/partials/StartPage.vue'
 import Button from '@/components/Button.vue'
 import Table from '@/components/Table.vue'
 import { openModal } from '@/components/Modal.vue';
-import CustomerCreate from '@/views/Customers/Create.vue'
-import CustomerEdit from '@/views/Customers/Edit.vue'
+import ProviderCreate from '@/views/Providers/Create.vue'
+import ProviderEdit from '@/views/Providers/Edit.vue'
 import SearchData from '@/components/SearchData'
 import * as tables from '@/data/TableData'
 
-const pageTitle = 'Listado de Clientes'
+const pageTitle = 'Listado de Proveedores'
 const breadcrumbs: Array[] = [
     { label: 'Alernal', url: "/" },
-    { label: 'Clientes', },
+    { label: 'Proveedores', },
 ];
 
 //METODO PARA ABRIR MODAL DE EDITAR
-const DataUpdate = ref({ tipo_documento: 'CC' });
+const DataUpdate = ref<tables.Provider>({ tipo_documento: 'CC' });
 const editData = async (id) => {
-    const response = await axios.get(`/customers/${id}`);
-    DataUpdate.value = { ...response.data.customer };
+    const response = await axios.get(`/providers/${id}`);
+    DataUpdate.value = { ...response.data.provider };
     openModal('modalUpdate');
 };
 
 /* LISTAR DATOS */
-const customers = ref([]);
+const providers = ref([]);
 const currentPage = ref();
 const lastPage = ref();
 const perPage = ref();
 const Search = ref('');
 
-const getCustomers = async (page, search = '') => {
-    const response = await axios.get(`/customers?page=${page}&search=${Search.value}`);
-    customers.value = response.data.customers.data;
-    currentPage.value = response.data.customers.current_page;
-    lastPage.value = response.data.customers.last_page;
-    perPage.value = response.data.customers.per_page;
+const getProviders = async (page, search = '') => {
+    const response = await axios.get(`/providers?page=${page}&search=${Search.value}`);
+    providers.value = response.data.providers.data;
+    currentPage.value = response.data.providers.current_page;
+    lastPage.value = response.data.providers.last_page;
+    perPage.value = response.data.providers.per_page;
 }
 
-onMounted(() => { getCustomers(1) });
+onMounted(() => { getProviders(1) });
 </script>
 
 <template>
     <Dashboard>
         <StartPage :breadcrumbs="breadcrumbs" :page-title="pageTitle"></StartPage>
 
-        <Table @update:currentPage="(page) => { currentPage = page, getCustomers(page) }" :current-page="currentPage"
+        <Table @update:currentPage="(page) => { currentPage = page, getProviders(page) }" :current-page="currentPage"
             :last-page="lastPage" :per-page="perPage">
             <template v-slot:t-header>
                 <div>
@@ -55,7 +55,7 @@ onMounted(() => { getCustomers(1) });
                         @click="openModal('modalCreate')"></Button>
                 </div>
 
-                <SearchData @search-input="(value) => { getCustomers(1); Search = value; }"></SearchData>
+                <SearchData @search-input="(value) => { getProviders(1); Search = value; }"></SearchData>
             </template>
             <template v-slot:thead>
                 <th>ID</th>
@@ -69,26 +69,26 @@ onMounted(() => { getCustomers(1) });
                 <th>ACCIÓN</th>
             </template>
             <template v-slot:tbody>
-                <tr v-for="(customer, index) in customers" :key="index">
+                <tr v-for="(provider, index) in providers" :key="index">
                     <td>{{ ++index }}</td>
-                    <td>{{ customer.tipo_documento }}</td>
-                    <td>{{ customer.numero_documento }}</td>
-                    <td>{{ customer.nombre_razonsocial }}</td>
-                    <td>{{ customer.telefono }}</td>
-                    <td>{{ customer.correo }}</td>
-                    <td>{{ customer.direccion }}</td>
-                    <td>{{ customer.municipio }}</td>
+                    <td>{{ provider.tipo_documento }}</td>
+                    <td>{{ provider.numero_documento }}</td>
+                    <td>{{ provider.nombre_razonsocial }}</td>
+                    <td>{{ provider.telefono }}</td>
+                    <td>{{ provider.correo }}</td>
+                    <td>{{ provider.direccion }}</td>
+                    <td>{{ provider.municipio }}</td>
                     <td>
-                        <a href="#" @click="editData(customer.id)" class="mr-2"><i class="fas fa-edit"></i></a>
+                        <a href="#" @click="editData(provider.id)" class="mr-2"><i class="fas fa-edit"></i></a>
                         <a href="#"
-                            @click="deleteItem(customer.nombre_razonsocial, `/customers/${customer.id}`, null, () => getCustomers(1))"
+                            @click="deleteItem(provider.nombre_razonsocial, `/providers/${provider.id}`, null, () => getProviders(1))"
                             class="text-danger"><i class="fas fa-trash"></i></a>
                     </td>
                 </tr>
             </template>
         </Table>
 
-        <CustomerCreate @created="getCustomers(1)"></CustomerCreate>
-        <CustomerEdit :Data="DataUpdate" @updated="getCustomers(currentPage)"></CustomerEdit>
+        <ProviderCreate @created="getProviders(1)"></ProviderCreate>
+        <ProviderEdit :Data="DataUpdate" @updated="getProviders(currentPage)" ></ProviderEdit>
     </Dashboard>
 </template>

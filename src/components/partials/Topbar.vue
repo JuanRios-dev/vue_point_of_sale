@@ -1,7 +1,8 @@
 <script setup>
 import { ref, defineEmits } from 'vue'
+import { useAuthStore } from '@/auth';
+const auth = useAuthStore();
 const emit = defineEmits(['menuToggled']);
-
 
 const isNotifyOpen = ref([])
 const toggleNotify = (index) => {
@@ -22,6 +23,14 @@ const toggleMenu = () => {
         emit('menuToggled', false);
     }
 }
+
+const logout = () => {
+    auth.logout();
+}
+
+//LOGICA DE EMPRESAS
+
+const selectedCompanyId = auth.isSelectedCompanyId;
 
 </script>
 
@@ -80,7 +89,7 @@ const toggleMenu = () => {
                         <div class="dropdown-divider"></div>
 
                         <!-- item-->
-                        <a href="javascript:void(0);" class="dropdown-item notify-item">
+                        <a href="#" class="dropdown-item notify-item" @click.prevent="logout()">
                             <i class="fe-log-out"></i>
                             <span>Logout</span>
                         </a>
@@ -184,6 +193,15 @@ const toggleMenu = () => {
 
                     </div>
                 </li>
+
+                <li class="nav-link">
+                    <select @change="auth.setSelectedCompanyId($event.target.value)" v-model="selectedCompanyId">
+                        <option disabled value="">Selecciona una empresa</option>
+                        <option v-for="(nombre, id) in auth.isCompanies" :key="id" :value="id">{{ nombre }}
+                        </option>
+                    </select>
+                </li>
+
             </ul>
 
             <!-- LOGO -->

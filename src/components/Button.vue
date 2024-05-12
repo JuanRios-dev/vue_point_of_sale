@@ -10,9 +10,6 @@ export default {
         icon: {
             type: String,
         },
-        url: {
-            type: String,
-        }
     },
     data() {
         return {
@@ -26,7 +23,7 @@ export default {
 </script>
 
 <template>
-    <a :href="url" :class="[style, 'btn']">
+    <a href="javascript:void(0)" :class="[style, 'btn']">
         <i :class="[icon]"></i> {{ title }}
     </a>
 </template>
