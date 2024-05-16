@@ -33,7 +33,7 @@ const customerSearch = async () => {
 const customerSelect = (customer) => {
     customerData.value = customer;
     customerQuery.value = '';
-    emit('customerSelected', customer.id);
+    emit('customerSelected', { providerId: customer.id, responsableIva: customer.responsable_iva });
     closeModal('modalSearchCustomers');
 }
 

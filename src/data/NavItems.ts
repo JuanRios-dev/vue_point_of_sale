@@ -65,4 +65,11 @@ export const navItems: NavItem[] = [
     icon: "mdi mdi-finance",
     items: [{ label: "Balance General", link: "#" }],
   },
+  {
+    title: "Extras",
+    icon: "fas fa-plus",
+    items: [
+      { label: "Empresas", link: "/companies" },
+    ],
+  },
 ];

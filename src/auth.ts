@@ -22,7 +22,7 @@ export const useAuthStore = defineStore("auth", {
         this.user = user;
         this.token = token;
         this.companies = companies;
-        this.selectedCompanyId = (Object.keys(companies)[0]);
+        this.selectedCompanyId = Object.keys(companies)[0];
         router.push("/");
       } catch (error) {
         console.error("Error al iniciar sesión:", error);
@@ -30,7 +30,7 @@ export const useAuthStore = defineStore("auth", {
     },
     async logout() {
       try {
-        await axios.post("/logout");
+        // await axios.post("/logout");
 
         this.user = null;
         this.token = null;
@@ -45,6 +45,14 @@ export const useAuthStore = defineStore("auth", {
     setSelectedCompanyId(value: string) {
       this.selectedCompanyId = value;
       window.location.reload();
+    },
+    async refreshCompanies(data:any) {
+      try {
+        this.companies = data;
+        this.selectedCompanyId = Object.keys(this.companies)[0];
+      } catch (error) {
+        console.error("Error al refrescar las empresas:", error);
+      }
     },
   },
   persist: true,

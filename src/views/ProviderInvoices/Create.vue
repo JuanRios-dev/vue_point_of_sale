@@ -60,6 +60,7 @@ const createErrors = ref([]);
 const itemsQuery = ref('');
 const itemsResults = ref([]);
 const itemData = ref([]);
+const responsable_iva = ref(0);
 
 //BUSCADOR
 const itemsSearch = async () => {
@@ -106,13 +107,34 @@ const itemSelect = async (item) => {
 
 const calcularPrecioTotal = async (item) => {
     const index = DataCreate.value.items.indexOf(item);
-    item.impuestos = ((item.cantidad * item.precio_unitario) * itemData.value[index].iva_compra) / 100;
+    if (responsable_iva.value === 1) {
+        item.impuestos = ((item.cantidad * item.precio_unitario) * itemData.value[index].iva_compra) / 100;
+    } else {
+        item.impuestos = 0;
+    }
     item.valor_descuento = (((item.cantidad * item.precio_unitario) - item.impuestos) * item.descuento) / 100;
     item.subtotal = ((item.cantidad * item.precio_unitario) - item.impuestos) - item.valor_descuento;
     item.precio_total = item.subtotal + item.impuestos;
 
     await calcularTotales();
 }
+
+const recalculoPrecioTotal = async () => {
+    for (const item of DataCreate.value.items) {
+        const index = DataCreate.value.items.indexOf(item);
+        if (responsable_iva.value === 1) {
+            item.impuestos = ((item.cantidad * item.precio_unitario) * itemData.value[index].iva_compra) / 100;
+        } else {
+            item.impuestos = 0;
+        }
+        item.valor_descuento = (((item.cantidad * item.precio_unitario) - item.impuestos) * item.descuento) / 100;
+        item.subtotal = ((item.cantidad * item.precio_unitario) - item.impuestos) - item.valor_descuento;
+        item.precio_total = item.subtotal + item.impuestos;
+    }
+
+    await calcularTotales();
+}
+
 
 const calcularTotales = async () => {
     DataCreate.value.totalImpuestos = DataCreate.value.items.reduce((total, item) => {
@@ -152,7 +174,8 @@ const DataSave = async () => {
         <StartPage :breadcrumbs="breadcrumbs" :page-title="pageTitle"></StartPage>
         <div class="row">
             <div class="col-md-3">
-                <ProviderSearch @customer-selected="(providerId) => { DataCreate.provider_id = providerId }">
+                <ProviderSearch
+                    @customer-selected="(data) => { DataCreate.provider_id = data.providerId; responsable_iva = data.responsableIva; recalculoPrecioTotal() }">
                     <span v-if="createErrors['provider_id']" class="invalid-feedback" style="display: block">
                         {{ createErrors['provider_id'].join(', ') }}
                     </span>
@@ -270,8 +293,8 @@ const DataSave = async () => {
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <textarea placeholder="Observaciones" id="detalles" cols="" rows="1"
-                        class="form-control" v-model="DataCreate.observaciones"></textarea>
+                    <textarea placeholder="Observaciones" id="detalles" cols="" rows="1" class="form-control"
+                        v-model="DataCreate.observaciones"></textarea>
                 </div>
             </div>
 

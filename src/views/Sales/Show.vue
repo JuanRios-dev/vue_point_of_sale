@@ -8,6 +8,7 @@ import Table from '@/components/Table.vue'
 import Modal from '@/components/Modal.vue'
 import ProviderSearch from '@/components/services/ProviderSearch.vue'
 import { component as VueNumber } from '@coders-tm/vue-number-format'
+import { show_alert } from '@/requestHandler'
 
 const pageTitle = 'Factura de Venta'
 const breadcrumbs: Array[] = [
@@ -34,52 +35,57 @@ onMounted(() => { fetchData() });
 
 
 const imprimirPDF = async (saleId) => {
-    // Hacer la solicitud para obtener el PDF
-    const response = await axios.get(`/sales/pdf/${saleId}`, {
-        responseType: 'arraybuffer' // Para recibir una respuesta binaria (el PDF)
-    });
 
-    // Crear una URL del objeto blob recibido
-    const pdfData = new Uint8Array(response.data);
-    const largoTotal = response.headers['content-type'];
+    try {
+        const response = await axios.get(`/sales/pdf/${saleId}`, {
+            responseType: 'arraybuffer' // Para recibir una respuesta binaria (el PDF)
+        });
 
-    // Cargar el PDF usando PDF.js
-    const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
+        // Crear una URL del objeto blob recibido
+        const pdfData = new Uint8Array(response.data);
+        const largoTotal = response.headers['content-type'];
 
-    // Obtener la primera página del PDF
-    const pageNumber = 1;
-    const page = await pdf.getPage(pageNumber);
+        // Cargar el PDF usando PDF.js
+        const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
 
-    // Obtener la vista de la página
-    const viewport = page.getViewport({ scale: 1.5 });
+        // Obtener la primera página del PDF
+        const pageNumber = 1;
+        const page = await pdf.getPage(pageNumber);
 
-    // Crear un elemento canvas para el renderizado
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    canvas.height = viewport.height;
-    canvas.width = viewport.width;
+        // Obtener la vista de la página
+        const viewport = page.getViewport({ scale: 1.5 });
 
-    // Renderizar la página en el canvas
-    await page.render({
-        canvasContext: context,
-        viewport: viewport
-    }).promise;
+        // Crear un elemento canvas para el renderizado
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
 
-    const style = document.createElement('style');
-    style.innerHTML = `@media print { @page { size: 75mm ${largoTotal}mm; margin: 0; } }`;
+        // Renderizar la página en el canvas
+        await page.render({
+            canvasContext: context,
+            viewport: viewport
+        }).promise;
 
-    // Mostrar el cuadro de diálogo de impresión del navegador
-    canvas.toBlob((blob) => {
-        const url = URL.createObjectURL(blob);
-        const printFrame = document.createElement('iframe');    
-        printFrame.src = url;
-        printFrame.style.visibility = 'hidden';
-        document.body.appendChild(printFrame);
-        printFrame.onload = function () {
-            printFrame.contentDocument.head.appendChild(style);
-            printFrame.contentWindow.print();
-        };
-    });
+        const style = document.createElement('style');
+        style.innerHTML = `@media print { @page { size: 75mm ${largoTotal}mm; margin: 0; } }`;
+
+        // Mostrar el cuadro de diálogo de impresión del navegador
+        canvas.toBlob((blob) => {
+            const url = URL.createObjectURL(blob);
+            const printFrame = document.createElement('iframe');
+            printFrame.src = url;
+            printFrame.style.visibility = 'hidden';
+            document.body.appendChild(printFrame);
+            printFrame.onload = function () {
+                printFrame.contentDocument.head.appendChild(style);
+                printFrame.contentWindow.print();
+            };
+        });
+    } catch (error) {
+        show_alert("Ocurrió un error al obtener el PDF. Por favor, inténtalo nuevamente.", "error");
+    }
+
 }
 </script>
 
@@ -131,7 +137,7 @@ const imprimirPDF = async (saleId) => {
         <div class="row">
             <div class="col-md-3">
                 <Button :style="'btn-purple text-light'" :title="'Imprimir'" :icon="'fe-plus-square'"
-                @click.prevent="imprimirPDF(saleId)"></Button>
+                    @click.prevent="imprimirPDF(saleId)"></Button>
             </div>
         </div>
 

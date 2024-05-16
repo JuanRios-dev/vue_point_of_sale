@@ -95,7 +95,8 @@ export async function deleteItem(
   name: string,
   url: string,
   redirect: string | null = null,
-  callback: (() => void) | null = null
+  callback: (() => void) | null = null,
+  responseCallback: ((response: any) => void) | null = null 
 ): Promise<void> {
   const confirmed = await confirmAction(
     `¿Estás seguro de eliminar a ${name}?`,
@@ -106,6 +107,9 @@ export async function deleteItem(
     const response = await sendRequest("DELETE", url, null, true, redirect);
     if (!redirect && callback) {
       callback();
+    }
+    if (responseCallback) {
+      responseCallback(response);
     }
   }
 }

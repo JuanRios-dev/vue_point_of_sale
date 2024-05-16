@@ -11,7 +11,7 @@ const emit = defineEmits(['created']);
 
 /* REGISTRO DE CLIENTE */
 
-const DataCreate = ref<tables.Provider>({ tipo_documento: 'CC', responsable_iva: 1, company_id: 1 });
+const DataCreate = ref({ tipo_documento: 'CC', responsable_iva: 1 });
 const createErrors = ref([])
 const createData = async () => {
     const { status, error, errors } = await sendRequest('POST', '/providers', DataCreate.value);

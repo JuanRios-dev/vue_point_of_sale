@@ -13,6 +13,21 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/Auth/Login.vue')
   },
 
+  /* PROFILE */
+  {
+    path: '/profile/:id',
+    name: 'profile',
+    component: () => import('@/views/Profile/Index.vue')
+  },
+
+  /* COMPANIES */
+  {
+    path: '/companies',
+    name: 'companies',
+    component: () => import('@/views/Companies/Index.vue')
+  },
+
+
   /* CUSTOMERS */
   {
     path: '/customers',
