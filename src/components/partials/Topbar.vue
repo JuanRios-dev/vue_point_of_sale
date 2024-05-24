@@ -56,8 +56,8 @@ const selectedCompanyId = auth.isSelectedCompanyId;
                     <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect" data-toggle="dropdown" href="#"
                         role="button" @click.prevent="toggleNotify(1)">
                         <img src="../../assets/images/users/user-1.jpg" alt="user-image" class="rounded-circle">
-                        <span class="pro-user-name ml-1">
-                            Marcia J. <i class="mdi mdi-chevron-down"></i>
+                        <span  v-if="auth.user" class="pro-user-name ml-1">
+                            {{ auth.user.nombre }}<i class="mdi mdi-chevron-down"></i>
                         </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right profile-dropdown" :class="{ show: isNotifyOpen[1] }">

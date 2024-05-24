@@ -6,6 +6,8 @@ import StartPage from '@/components/partials/StartPage.vue'
 import Dashboard from '@/layouts/DashboardLayout.vue'
 import Button from '@/components/Button.vue'
 import * as tables from '@/data/TableData'
+import { useAuthStore } from '@/auth';
+const auth = useAuthStore();
 
 const pageTitle = 'Editar Perfil'
 const breadcrumbs: Array[] = [
@@ -19,20 +21,23 @@ const DataUpdate = ref({});
 const updateErrors = ref([])
 const id = useRouter().currentRoute.value.params.id;
 
-const data = async () => {
+const datalist = async () => {
     const response = await axios.get(`/users/${id}`)
     DataUpdate.value = { ...response.data.user }
 }
 
 const updateData = async () => {
-    const { status, errors } = await sendRequest('PUT', `/users/${DataUpdate.value.id}`, DataUpdate.value, true);
+    const { status, errors, data } = await sendRequest('PUT', `/users/${DataUpdate.value.id}`, DataUpdate.value, true);
 
     if (status === 422) {
         updateErrors.value = errors;
         return;
     }
 
-    await data();
+    if (status === 200) {
+        auth.user = data.user;
+        await datalist();
+    }
 }
 
 const changePassword = ref({});
@@ -45,10 +50,10 @@ const cambioContraseña = async () => {
         return;
     }
 
-    await data();
+    await datalist();
 }
 
-onMounted(() => { data() });
+onMounted(() => { datalist() });
 </script>
 
 <template>
@@ -133,7 +138,8 @@ onMounted(() => { data() });
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="contraseña">Contraseña Actual</label>
-                                    <input type="text" class="form-control" id="contraseña" :class="{ 'is-invalid': updateErrors['current_password'] }"
+                                    <input type="text" class="form-control" id="contraseña"
+                                        :class="{ 'is-invalid': updateErrors['current_password'] }"
                                         placeholder="Contraseña Actual..." v-model="changePassword.current_password">
                                     <span v-if="updateErrors['current_password']" class="invalid-feedback">
                                         {{ updateErrors['current_password'].join(', ') }}
@@ -143,7 +149,8 @@ onMounted(() => { data() });
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="contraseñanueva">Contraseña Nueva</label>
-                                    <input type="text" class="form-control" id="contraseñanueva" :class="{ 'is-invalid': updateErrors['new_password'] }"
+                                    <input type="text" class="form-control" id="contraseñanueva"
+                                        :class="{ 'is-invalid': updateErrors['new_password'] }"
                                         placeholder="Contraseña Nueva..." v-model="changePassword.new_password">
                                     <span v-if="updateErrors['new_password']" class="invalid-feedback">
                                         {{ updateErrors['new_password'].join(', ') }}
@@ -153,7 +160,8 @@ onMounted(() => { data() });
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="confirmarcontraseña">Confirmar Contraseña</label>
-                                    <input type="text" class="form-control" id="confirmarcontraseña" :class="{ 'is-invalid': updateErrors['confirm_password'] }"
+                                    <input type="text" class="form-control" id="confirmarcontraseña"
+                                        :class="{ 'is-invalid': updateErrors['confirm_password'] }"
                                         placeholder="Confirmar Contraseña..." v-model="changePassword.confirm_password">
                                     <span v-if="updateErrors['confirm_password']" class="invalid-feedback">
                                         {{ updateErrors['confirm_password'].join(', ') }}
@@ -161,8 +169,8 @@ onMounted(() => { data() });
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <Button :style="'btn-danger mr-1'" :title="'Cambiar Contraseña'"
-                                    :icon="'fa fa-save'" @click="cambioContraseña()"></Button>
+                                <Button :style="'btn-danger mr-1'" :title="'Cambiar Contraseña'" :icon="'fa fa-save'"
+                                    @click="cambioContraseña()"></Button>
                             </div>
                         </div>
                     </form>

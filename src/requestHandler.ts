@@ -23,15 +23,21 @@ export function show_alert(
     Swal.fire({
       title: message,
       icon: icon,
-      showConfirmButton: false,
+      showConfirmButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = redirect;
+      }
     });
   } else {
     Swal.fire({
       title: message,
       icon: icon,
+      showConfirmButton: false
     });
   }
 }
+
 
 export async function confirmAction(
   title: string,

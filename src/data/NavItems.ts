@@ -20,11 +20,6 @@ export const navItems: NavItem[] = [
     icon: "mdi mdi-sale",
   },
   {
-    title: "Dashboard",
-    link: "/",
-    icon: "mdi mdi-desktop-mac-dashboard",
-  },
-  {
     title: "POS",
     icon: "fas fa-cash-register",
     items: [
@@ -55,6 +50,28 @@ export const navItems: NavItem[] = [
           },
         ],
       },
+      // {
+      //   label: "Pedidos",
+      //   link: "#",
+      //   subitems: [
+      //     {
+      //       label: "Pendientes",
+      //       link: "#",
+      //     },
+      //     {
+      //       label: "En Procceso",
+      //       link: "#",
+      //     },
+      //     {
+      //       label: "Completados",
+      //       link: "#",
+      //     },
+      //     {
+      //       label: "Cancelados",
+      //       link: "#",
+      //     },
+      //   ],
+      // },
       { label: "Productos", link: "/items" },
       { label: "Movimientos", link: "/movements" },
       { label: "Factura Proveedor", link: "/provider-invoices" },

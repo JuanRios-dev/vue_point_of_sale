@@ -150,7 +150,7 @@ const router = createRouter({
 })
 
 /* GUARDIA DE NAVEGACIÓN */
-router.beforeEach(async (to, from, next) => {
+router.beforeEach( (to, from, next) => {
   const publicPages = ['/login'];
   const auth = useAuthStore();
   const isPublicPage = publicPages.includes(to.path);

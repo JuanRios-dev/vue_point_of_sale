@@ -20,7 +20,7 @@ const breadcrumbs: Array[] = [
 //Formulario de guardado
 const DataCreate = ref({
     fecha: new Date().toISOString().split('T')[0],
-    formaPago: '',
+    formaPago: 'Efectivo',
     descuento: 0.00,
     valorDescuento: 0.00,
     subTotal: 0,

@@ -25,11 +25,21 @@ const items = ref([]);
 const customer = ref({});
 
 const fetchData = async () => {
-    const response = await axios.get(`/sales/${saleId}`);
-    DataCreate.value = response.data.sale;
-    customer.value = response.data.sale.customer;
-    items.value = response.data.sale.items;
+    try {
+        const response = await axios.get(`/sales/${saleId}`);
+
+        if (response.status === 404) {
+            throw new Error('Sale not found');
+        }
+
+        DataCreate.value = response.data.sale;
+        customer.value = response.data.sale.customer;
+        items.value = response.data.sale.items;
+    } catch (error) {
+        show_alert("Venta no encontrada. Por favor, inténtalo nuevamente.", "error", "/sales");
+    }
 }
+
 
 onMounted(() => { fetchData() });
 
@@ -83,7 +93,7 @@ const imprimirPDF = async (saleId) => {
             };
         });
     } catch (error) {
-        show_alert("Ocurrió un error al obtener el PDF. Por favor, inténtalo nuevamente.", "error");
+        show_alert('Ocurrió un error al obtener el PDF. Por favor, inténtalo nuevamente.', 'error', '/sales');
     }
 
 }
@@ -97,7 +107,7 @@ const imprimirPDF = async (saleId) => {
                 <div class="form-group">
                     <label for="customer_id" class="control-label">Cliente</label>
                     <input type="text" class="form-control" id="customer_id" placeholder="customer_id"
-                        v-model="customer.nombre_razonsocial" autocomplete="off">
+                        v-model="customer.nombre_razonsocial" autocomplete="off" disabled>
                 </div>
             </div>
 
@@ -105,7 +115,7 @@ const imprimirPDF = async (saleId) => {
                 <div class="form-group">
                     <label for="prefijo" class="control-label">Prefijo</label>
                     <input type="text" class="form-control" id="prefijo" placeholder="prefijo"
-                        v-model="DataCreate.prefijo" autocomplete="off">
+                        v-model="DataCreate.prefijo" autocomplete="off" disabled>
                 </div>
             </div>
 
@@ -113,7 +123,7 @@ const imprimirPDF = async (saleId) => {
                 <div class="form-group">
                     <label for="numero" class="control-label">Número</label>
                     <input type="text" class="form-control" id="numero" placeholder="numero" v-model="DataCreate.numero"
-                        autocomplete="off">
+                        autocomplete="off" disabled>
                 </div>
             </div>
 
@@ -121,7 +131,7 @@ const imprimirPDF = async (saleId) => {
                 <div class="form-group">
                     <label for="fecha" class="control-label">Fecha</label>
                     <input type="date" class="form-control" id="fecha" placeholder="fecha" v-model="DataCreate.fecha"
-                        autocomplete="off">
+                        autocomplete="off" disabled>
                 </div>
             </div>
 
@@ -129,7 +139,7 @@ const imprimirPDF = async (saleId) => {
                 <div class="form-group">
                     <label for="formaPago" class="control-label">FORMA DE PAGO</label>
                     <input type="text" class="form-control" id="formaPago" placeholder="formaPago"
-                        v-model="DataCreate.formaPago" autocomplete="off">
+                        v-model="DataCreate.formaPago" autocomplete="off" disabled>
                 </div>
             </div>
         </div>
